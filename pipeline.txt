@@ -17,6 +17,12 @@ pipeline {
              echo "Run unit tests and integration tests"
                 echo "using appropriate test automation tools"
             }
+            post{
+                success{
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Test Status Email",
+                    body: "Test was successful!"
+                }
         }
         stage('Code Analysis') {
             steps {
@@ -27,6 +33,13 @@ pipeline {
             steps {
                 echo "Perform a security scan on the code using a security scanning tool"
             }
+            post{
+                success{
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Security Scan Status Email",
+                    body: "Security Scan was successful!"
+                }
+        
         }
         stage('Deploy to Staging') {
             steps {
