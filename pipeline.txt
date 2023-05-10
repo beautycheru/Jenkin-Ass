@@ -11,18 +11,12 @@ pipeline {
                
                echo "Build code using build automation tool like Maven"
             }
-        
+        }
         stage('Unit and Integration Tests') {
             steps {
-                echo "Run unit tests and integration tests"
+             echo "Run unit tests and integration tests"
                 echo "using appropriate test automation tools"
             }
-            post{
-                success{
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Test Status Email",
-                    body: "Test was successful!"
-             }
         }
         stage('Code Analysis') {
             steps {
@@ -32,12 +26,6 @@ pipeline {
         stage('Security Scan') {
             steps {
                 echo "Perform a security scan on the code using a security scanning tool"
-            }
-            post{
-                success{
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Security Scan Status Email",
-                    body: "Security Scan was successful!"
             }
         }
         stage('Deploy to Staging') {
@@ -56,16 +44,7 @@ pipeline {
             stage('Deploy to Production') {
             steps {
                 echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
-               
-           }
-            
-        }
-            stage('Complete') {
-            steps {
-                echo "Completed)"
             }
         }
     }
-}
-}
 }
