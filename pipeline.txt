@@ -50,7 +50,8 @@ pipeline {
             stage('Deploy to Production') {
             steps {
                 echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
-            }
-        }
-    }
-}
+             }
+         }
+     }
+  }
+ }
