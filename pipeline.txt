@@ -20,8 +20,8 @@ pipeline {
             post{
                  success{
                      mail to: "beaty.cheru33@gmail.com",
-                     subject: "Test status email"
-                     body: "Test was successful"
+                     subject: "Test status email",
+                     body: "Test was successful!"
                   }
         }
         stage('Code Analysis') {
