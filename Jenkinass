@@ -8,22 +8,34 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Build code using build automation tool like Maven"
+               
+               echo "Build code using build automation tool like Maven"
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo "Run unit tests and integration tests"
-                    echo "using appropriate test automation tools"
-                }
+             echo "Run unit tests and integration tests"
+                echo "using appropriate test automation tools"
             }
             post {
                 success {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Unit and Integration Tests Successful",
-                    body: "Unit and integration tests have passed. Please find the attached logs."
-            }
+                    // Send success notification email
+                    emailext (
+                        subject: "Unit and Integration Tests Passed",
+                        body: "Unit and integration tests have passed. Please find the attached logs.",
+                        to: "beaty.cheru33@gmail.com",
+                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
+                    )
+                }
+                failure {
+                    // Send failure notification email
+                    emailext (
+                        subject: "Unit and Integration Tests Failed",
+                        body: "Unit and integration tests have failed. Please find the attached logs.",
+                        to: "beaty.cheru33@gmail.com",
+                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
+                    )
+                }
         }
         stage('Code Analysis') {
             steps {
@@ -34,16 +46,25 @@ pipeline {
             steps {
                 echo "Perform a security scan on the code using a security scanning tool"
             }
-             post {
-                success {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Security scan passed!",
-                    body: "Security scan has passed. Please find the attached logs."
-                }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo "Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)"
                 
             }
         }
-       
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Run integration tests on the staging environment"
+                
+            }
+            
+        }
+            stage('Deploy to Production') {
+            steps {
+                echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
+            }
+        }
     }
 }
 }
