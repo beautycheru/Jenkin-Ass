@@ -17,14 +17,15 @@ pipeline {
              echo "Run unit tests and integration tests"
                 echo "using appropriate test automation tools"
             }
-            
-            post {
-                always {
-                    script {
-                        sendEmailNotification(currentBuild.result, "Unit and Integration Tests")
-                    }
-                }
-            }
+         }
+         post{
+                success{
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Test Status Email",
+                    body: "Test was successful!"
+             }
+        }
+           
         }
         stage('Code Analysis') {
             steps {
