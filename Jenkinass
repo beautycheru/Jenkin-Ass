@@ -19,16 +19,17 @@ pipeline {
             }
             post {
                 success {
-                    
+                         mail to: "beaty.cheru33@gmail.com",
                         subject: "Unit and Integration Tests Passed",
-                        body: "Unit and integration tests have passed. Please find the attached logs.",
-                        to: "beaty.cheru33@gmail.com",
+                        body: "Unit and integration tests have passed. Please find the attached logs."
+                        
                      
                 }
                 failure {
+                         mail to: "beaty.cheru33@gmail.com",
                         subject: "Unit and Integration Tests Failed",
-                        body: "Unit and integration tests have failed. Please find the attached logs.",
-                        to: "beaty.cheru33@gmail.com",
+                        body: "Unit and integration tests have failed. Please find the attached logs."
+                        
                         
                     
                 }
