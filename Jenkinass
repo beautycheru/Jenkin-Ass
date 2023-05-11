@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    environment {
+        DIRECTORY_PATH = "C:/Users/Jenkins/pipeline"
+        TESTING_ENVIRONMENT = "testing-environment"
+        PRODUCTION_ENVIRONMENT = "Beatrice"
+    }
+    stages {
+        stage('Build') {
+            steps {
+               
+               echo "Build code using build automation tool like Maven"
+            }
+        }
+        stage('Unit and Integration Tests') {
+            steps {
+             echo "Run unit tests and integration tests"
+                echo "using appropriate test automation tools"
+            }
+        }
+        stage('Code Analysis') {
+            steps {
+                echo "Integrate a code analysis tool to analyze your code (e.g., SonarQube)"
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                echo "Perform a security scan on the code using a security scanning tool"
+            }
+        }
+        stage('Deploy to Staging') {
+            steps {
+                echo "Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)"
+                
+            }
+        }
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Run integration tests on the staging environment"
+                
+            }
+            
+        }
+            stage('Deploy to Production') {
+            steps {
+                echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
+            }
+        }
+    }
+}
