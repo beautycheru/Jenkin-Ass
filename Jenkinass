@@ -35,12 +35,11 @@ pipeline {
             steps {
                 echo "Perform a security scan on the code using a security scanning tool"
             }
-            post {
+             post {
                 success {
-                        subject: "Security Scan Passed",
-                        body: "Security scan has passed. Please find the attached logs.",
-                        to: "beaty,cheru33@gmail.com",
-                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Security scan passed!",
+                    body: "Test was successful!"
                 }
                 
             }
