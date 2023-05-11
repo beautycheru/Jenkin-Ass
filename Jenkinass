@@ -17,7 +17,7 @@ pipeline {
              echo "Run unit tests and integration tests"
                 echo "using appropriate test automation tools"
              }
-          }  
+            
          post{
               always{
                     mail to: "beaty.cheru33@gmail.com",
@@ -26,6 +26,7 @@ pipeline {
                 }
             }
         }
+      }
         stage('Code Analysis') {
             steps {
                 echo "Integrate a code analysis tool to analyze your code (e.g., SonarQube)"
