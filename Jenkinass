@@ -21,17 +21,8 @@ pipeline {
             post {
                 success {
                     mail to: "beaty.cheru33@gmail.com",
-                    subject: "Test Status Email",
+                    subject: "Unit and Integration Tests Successful",
                     body: "Test was successful!"
-                }
-                failure {
-                    // Send failure notification email
-                    emailext (
-                        subject: "Unit and Integration Tests Failed",
-                        body: "Unit and integration tests have failed. Please find the attached logs.",
-                        to: "beaty.cheru33@gmail.com",
-                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
-                    )
                 }
             }
         }
@@ -46,23 +37,12 @@ pipeline {
             }
             post {
                 success {
-                    // Send success notification email
-                    emailext (
                         subject: "Security Scan Passed",
                         body: "Security scan has passed. Please find the attached logs.",
                         to: "beaty,cheru33@gmail.com",
                         attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
-                    )
                 }
-                failure {
-                    // Send failure notification email
-                    emailext (
-                        subject: "Security Scan Failed",
-                        body: "Security scan has failed. Please find the attached logs.",
-                        to: "your-email@example.com",
-                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
-                    )
-                }
+                
             }
         }
        
