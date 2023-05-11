@@ -11,7 +11,7 @@ pipeline {
                
                echo "Build code using build automation tool like Maven"
             }
-        }
+        
         stage('Unit and Integration Tests') {
             steps {
              echo "Run unit tests and integration tests"
@@ -56,3 +56,4 @@ pipeline {
             }
         }
     }
+  }  
