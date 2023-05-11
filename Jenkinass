@@ -16,16 +16,14 @@ pipeline {
             steps {
              echo "Run unit tests and integration tests"
                 echo "using appropriate test automation tools"
-            }
-         }
+             }
          post{
-                success{
+              always{
                     mail to: "beaty.cheru33@gmail.com",
                     subject: "Test Status Email",
                     body: "Test was successful!"
-             }
-        }
-           
+                }
+            }
         }
         stage('Code Analysis') {
             steps {
