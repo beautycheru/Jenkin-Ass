@@ -1,32 +1,23 @@
 pipeline {
     agent any
     environment {
-        DIRECTORY_PATH = "C:/Users/Jenkins/Jenkinass"
+        DIRECTORY_PATH = "C:/Users/Jenkins/pipeline"
         TESTING_ENVIRONMENT = "testing-environment"
         PRODUCTION_ENVIRONMENT = "Beatrice"
     }
-    stages{
-        stage('Build'){
-            steps{
-                 echo "Build code using build automation tool like Maven"
+    stages {
+        stage('Build') {
+            steps {
+               
+               echo "Build code using build automation tool like Maven"
             }
-          }
-        
+        }
         stage('Unit and Integration Tests') {
             steps {
              echo "Run unit tests and integration tests"
                 echo "using appropriate test automation tools"
-             }
-            
-         post{
-              always{
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Test Status Email",
-                    body: "Test was successful!"
-                }
             }
         }
-      }
         stage('Code Analysis') {
             steps {
                 echo "Integrate a code analysis tool to analyze your code (e.g., SonarQube)"
@@ -55,4 +46,5 @@ pipeline {
                 echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
             }
         }
-    } 
+    }
+}
