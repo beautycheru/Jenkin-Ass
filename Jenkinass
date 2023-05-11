@@ -1,70 +1,114 @@
 pipeline {
     agent any
-    environment {
-        DIRECTORY_PATH = "C:/Users/Jenkins/Jenkinass"
-        TESTING_ENVIRONMENT = "testing-environment"
-        PRODUCTION_ENVIRONMENT = "Beatrice"
-    }
+    
     stages {
         stage('Build') {
             steps {
-               
-               echo "Build code using build automation tool like Maven"
+                sh 'mvn clean package'
             }
         }
+        
         stage('Unit and Integration Tests') {
             steps {
-             echo "Run unit tests and integration tests"
-                echo "using appropriate test automation tools"
+                script {
+                    echo 'Run unit tests and integration tests'
+                    echo 'using appropriate test automation tools'
+                }
             }
             post {
-                success {
-                    // Send success notification email
-                    emailext (
-                        subject: "Unit and Integration Tests Passed",
-                        body: "Unit and integration tests have passed. Please find the attached logs.",
-                        to: "beaty.cheru33@gmail.com",
-                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
-                    )
+                always {
+                    script {
+                        sendEmailNotification(currentBuild.result, "Unit and Integration Tests")
+                    }
                 }
-                failure {
-                    // Send failure notification email
-                    emailext (
-                        subject: "Unit and Integration Tests Failed",
-                        body: "Unit and integration tests have failed. Please find the attached logs.",
-                        to: "beaty.cheru33@gmail.com",
-                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
-                    )
-                }
+            }
         }
+        
         stage('Code Analysis') {
             steps {
-                echo "Integrate a code analysis tool to analyze your code (e.g., SonarQube)"
+                script {
+                    echo 'Integrate a code analysis tool to analyze your code (e.g., SonarQube)'
+                }
             }
         }
+        
         stage('Security Scan') {
             steps {
-                echo "Perform a security scan on the code using a security scanning tool"
+                script {
+                    echo 'Perform a security scan on the code using a security scanning tool'
+                }
+            }
+            post {
+                always {
+                    script {
+                        sendEmailNotification(currentBuild.result, "Security Scan")
+                    }
+                }
             }
         }
+        
         stage('Deploy to Staging') {
             steps {
-                echo "Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)"
-                
+                script {
+                    echo 'Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)'
+                }
             }
         }
+        
         stage('Integration Tests on Staging') {
             steps {
-                echo "Run integration tests on the staging environment"
-                
+                script {
+                    echo 'Run integration tests on the staging environment'
+                }
             }
-            
         }
-            stage('Deploy to Production') {
+        
+        stage('Deploy to Production') {
             steps {
-                echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
+                script {
+                    echo 'Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)'
+                }
             }
         }
     }
-}
+    
+    post {
+        always {
+            script {
+                def subject = "Pipeline ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                def body = """
+                <p>The pipeline ${currentBuild.result}:</p>
+                <ul>
+                    <li>Job Name: ${env.JOB_NAME}</li>
+                    <li>Build Number: ${env.BUILD_NUMBER}</li>
+                    <li>Result: ${currentBuild.result}</li>
+                </ul>
+                """
+                
+                def attachments = []
+                attachments << [path: "${env.WORKSPACE}/build.log", disposition: 'ATTACHMENT']
+                attachments << [path: "${env.WORKSPACE}/test.log", disposition: 'ATTACHMENT']
+                attachments << [path: "${env.WORKSPACE}/security-scan.log", disposition: 'ATTACHMENT']
+                
+                emailext (
+                    subject: subject,
+                    body: body,
+                    to: 'beaty.cheru33@gmail.com',
+                    attachments: attachments
+                )
+            }
+        }
+    }
+    
+    def sendEmailNotification(status, stageName) {
+        def subject = "Stage ${status}: ${stageName}"
+        def body = "Stage ${status}: ${stageName}"
+        
+        emailext (
+            subject: subject,
+            body: body,
+            to: 'beaty.cheru33@gmail.com',
+            attachmentsPattern: "${env.WORKSPACE}/${stageName.replaceAll(' ', '_')}.log"
+        )
+    }
 }
