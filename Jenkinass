@@ -19,19 +19,18 @@ pipeline {
             }
             post {
                 success {
-                         mail to: "beaty.cheru33@gmail.com",
-                        subject: "Unit and Integration Tests Passed",
-                        body: "Unit and integration tests have passed. Please find the attached logs."
-                        
-                     
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Test Status Email",
+                    body: "Test was successful!"
                 }
                 failure {
-                         mail to: "beaty.cheru33@gmail.com",
+                    // Send failure notification email
+                    emailext (
                         subject: "Unit and Integration Tests Failed",
-                        body: "Unit and integration tests have failed. Please find the attached logs."
-                        
-                        
-                    
+                        body: "Unit and integration tests have failed. Please find the attached logs.",
+                        to: "beaty.cheru33@gmail.com",
+                        attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
+                    )
                 }
         }
         stage('Code Analysis') {
