@@ -10,6 +10,7 @@ pipeline {
             steps{
                  echo "Build code using build automation tool like Maven"
             }
+          }
         
         stage('Unit and Integration Tests') {
             steps {
@@ -53,5 +54,4 @@ pipeline {
                 echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
             }
         }
-    }
-  }  
+    } 
