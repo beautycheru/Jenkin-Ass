@@ -5,11 +5,10 @@ pipeline {
         TESTING_ENVIRONMENT = "testing-environment"
         PRODUCTION_ENVIRONMENT = "Beatrice"
     }
-    stages {
-        stage('Build') {
-            steps {
-               
-               echo "Build code using build automation tool like Maven"
+    stages{
+        stage('Build'){
+            steps{
+                 echo "Build code using build automation tool like Maven"
             }
         
         stage('Unit and Integration Tests') {
