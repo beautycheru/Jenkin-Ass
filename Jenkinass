@@ -30,12 +30,12 @@ pipeline {
                 }
                 failure {
                     // Send failure notification email
-                    emailext (
+                    emailext 
                         subject: "Unit and Integration Tests Failed",
                         body: "Unit and integration tests have failed. Please find the attached logs.",
                         to: "beaty.cheru33@gmail.com",
                         attachmentsPattern: "${env.JOB_NAME}/builds/${env.BUILD_NUMBER}/console.log"
-                    )
+                    
                 }
             }
         }
