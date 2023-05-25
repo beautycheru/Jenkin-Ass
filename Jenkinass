@@ -20,21 +20,40 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Unit and Integration Tests Passed",
-                    body: "Unit and integration tests have passed. Please find the attached logs."
+                    script {
+                        def logFiles = findFiles(glob: '**/*.log')
+                        if (logFiles) {
+                            mail body: "Unit and integration tests have passed. Please find the attached logs.",
+                                subject: "Unit and Integration Tests Passed",
+                                to: "beaty.cheru33@gmail.com",
+                                attachments: logFiles.collect { file -> file.path }
+                        } else {
+                            mail body: "Unit and integration tests have passed.",
+                                subject: "Unit and Integration Tests Passed",
+                                to: "beaty.cheru33@gmail.com"
+                        }
+                    }
                 }
                 failure {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Unit and Integration Test Failed",
-                    body: "Unit and integration tests failed. Please find the attached logs."
-                    
+                    script {
+                        def logFiles = findFiles(glob: '**/*.log')
+                        if (logFiles) {
+                            mail body: "Unit and integration tests failed. Please find the attached logs.",
+                                subject: "Unit and Integration Test Failed",
+                                to: "beaty.cheru33@gmail.com",
+                                attachments: logFiles.collect { file -> file.path }
+                        } else {
+                            mail body: "Unit and integration tests failed.",
+                                subject: "Unit and Integration Test Failed",
+                                to: "beaty.cheru33@gmail.com"
+                        }
+                    }
                 }
             }
         }
         stage('Code Analysis') {
             steps {
-                echo "Integrate a code analysis tool to analyze your code ( SonarQube)"
+                echo "Integrate a code analysis tool to analyze your code (SonarQube)"
             }
         }
         stage('Security Scan') {
@@ -43,37 +62,35 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Security Scan Passed",
-                    body: "Security scan has passed. Please find the attached logs."
+                    script {
+                        def logFiles = findFiles(glob: '**/*.log')
+                        if (logFiles) {
+                            mail body: "Security scan has passed. Please find the attached logs.",
+                                subject: "Security Scan Passed",
+                                to: "beaty.cheru33@gmail.com",
+                                attachments: logFiles.collect { file -> file.path }
+                        } else {
+                            mail body: "Security scan has passed.",
+                                subject: "Security Scan Passed",
+                                to: "beaty.cheru33@gmail.com"
+                        }
+                    }
                 }
                 failure {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Security Failed",
-                    body: "Security scan has failed. Please find the attached logs."
-                    
+                    script {
+                        def logFiles = findFiles(glob: '**/*.log')
+                        if (logFiles) {
+                            mail body: "Security scan has failed. Please find the attached logs.",
+                                subject: "Security Failed",
+                                to: "beaty.cheru33@gmail.com",
+                                attachments: logFiles.collect { file -> file.path }
+                        } else {
+                            mail body: "Security scan has failed.",
+                                subject: "Security Failed",
+                                to: "beaty.cheru33@gmail.com"
+                        }
+                    }
                 }
             }
         }
-        stage('Deploy to Staging') {
-            steps {
-                echo "Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)"
-                
-            }
-        }
-        stage('Integration Tests on Staging') {
-            steps {
-                echo "Run integration tests on the staging environment"
-                
-            }
-            
-        }
-            stage('Deploy to Production') {
-            steps {
-                echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
-            }
-     }
-  }
-}
-
-
+       
