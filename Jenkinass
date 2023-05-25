@@ -20,22 +20,21 @@ pipeline {
             }
             post {
                 success {
-                    emailext body: "Unit and integration tests have passed. Please find the attached logs.",
-                        subject: "Unit and Integration Tests Passed",
-                        attachmentsPattern: "**/*.log",
-                        to: "beaty.cheru33@gmail.com"
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Unit and Integration Tests Passed",
+                    body: "Unit and integration tests have passed. Please find the attached logs."
                 }
                 failure {
-                    emailext body: "Unit and integration tests failed. Please find the attached logs.",
-                        subject: "Unit and Integration Test Failed",
-                        attachmentsPattern: "**/*.log",
-                        to: "beaty.cheru33@gmail.com"
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Unit and Integration Test Failed",
+                    body: "Unit and integration tests failed. Please find the attached logs."
+                    
                 }
             }
         }
         stage('Code Analysis') {
             steps {
-                echo "Integrate a code analysis tool to analyze your code (SonarQube)"
+                echo "Integrate a code analysis tool to analyze your code ( SonarQube)"
             }
         }
         stage('Security Scan') {
@@ -44,33 +43,37 @@ pipeline {
             }
             post {
                 success {
-                    emailext body: "Security scan has passed. Please find the attached logs.",
-                        subject: "Security Scan Passed",
-                        attachmentsPattern: "**/*.log",
-                        to: "beaty.cheru33@gmail.com"
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Security Scan Passed",
+                    body: "Security scan has passed. Please find the attached logs."
                 }
                 failure {
-                    emailext body: "Security scan has failed. Please find the attached logs.",
-                        subject: "Security Failed",
-                        attachmentsPattern: "**/*.log",
-                        to: "beaty.cheru33@gmail.com"
+                    mail to: "beaty.cheru33@gmail.com",
+                    subject: "Security Failed",
+                    body: "Security scan has failed. Please find the attached logs."
+                    
                 }
             }
         }
         stage('Deploy to Staging') {
             steps {
                 echo "Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)"
+                
             }
         }
         stage('Integration Tests on Staging') {
             steps {
                 echo "Run integration tests on the staging environment"
+                
             }
+            
         }
-        stage('Deploy to Production') {
+            stage('Deploy to Production') {
             steps {
                 echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
             }
-        }
-    }
+     }
+  }
 }
+
+
