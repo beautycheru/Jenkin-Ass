@@ -1,16 +1,20 @@
 pipeline {
     agent any
+
     environment {
         DIRECTORY_PATH = "C:/Users/Jenkins/Jenkinass"
         TESTING_ENVIRONMENT = "testing-environment"
         PRODUCTION_ENVIRONMENT = "Beatrice"
+        EMAIL_RECIPIENT = "beaty.cheru33@gmail.com"  // Specify the email address to receive notifications
     }
+
     stages {
         stage('Build') {
             steps {
                 echo "Build code using build automation tool like Maven"
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
                 script {
@@ -20,58 +24,61 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Unit and Integration Tests Passed",
-                    body: "Unit and integration tests have passed. Please find the attached logs."
+                    sendEmail("Unit and Integration Tests Passed", "Unit and integration tests have passed.")
                 }
                 failure {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Unit and Integration Test Failed",
-                    body: "Unit and integration tests failed. Please find the attached logs."
-                    
+                    sendEmail("Unit and Integration Test Failed", "Unit and integration tests failed.")
                 }
             }
         }
+
         stage('Code Analysis') {
             steps {
-                echo "Integrate a code analysis tool to analyze your code ( SonarQube)"
+                echo "Integrate a code analysis tool to analyze your code (SonarQube)"
             }
         }
+
         stage('Security Scan') {
             steps {
                 echo "Perform a security scan on the code using a security scanning tool"
             }
             post {
                 success {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Security Scan Passed",
-                    body: "Security scan has passed. Please find the attached logs."
+                    sendEmail("Security Scan Passed", "Security scan has passed.")
                 }
                 failure {
-                    mail to: "beaty.cheru33@gmail.com",
-                    subject: "Security Failed",
-                    body: "Security scan has failed. Please find the attached logs."
-                    
+                    sendEmail("Security Scan Failed", "Security scan has failed.")
                 }
             }
         }
+
         stage('Deploy to Staging') {
             steps {
                 echo "Deploy the application to a staging server (e.g., using AWS CLI or Jenkins plugins)"
-                
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
                 echo "Run integration tests on the staging environment"
-                
             }
-            
         }
-            stage('Deploy to Production') {
+
+        stage('Deploy to Production') {
             steps {
                 echo "Deploy the application to a production server (e.g., using AWS CLI or Jenkins plugins)"
             }
-     }
-  }
+        }
+    }
+}
+
+def sendEmail(String subject, String body) {
+    emailext(
+        to: env.EMAIL_RECIPIENT,
+        subject: subject,
+        body: body,
+        attachLog: true,
+        mimeType: 'text/plain',
+        compressLog: true
+    )
 }
