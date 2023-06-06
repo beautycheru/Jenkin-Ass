@@ -26,9 +26,10 @@ pipeline {
                     attachLog: true
                 }
                 failure {
-                    mail to: "beaty.cheru33@gmail.com",
+                    emailext to: "beaty.cheru33@gmail.com",
                     subject: "Unit and Integration Test Failed",
-                    body: "Unit and integration tests failed. Please find the attached logs."
+                    body: "Unit and integration tests failed. Please find the attached logs.",
+                    attachLog: true
                     
                 }
             }
@@ -44,14 +45,16 @@ pipeline {
             }
             post {
                 success {
-                    mail to: "beaty.cheru33@gmail.com",
+                   emailext to: "beaty.cheru33@gmail.com",
                     subject: "Security Scan Passed",
-                    body: "Security scan has passed. Please find the attached logs."
+                    body: "Security scan has passed. Please find the attached logs.",
+                    attachLog: true
                 }
                 failure {
-                    mail to: "beaty.cheru33@gmail.com",
+                    emailext to: "beaty.cheru33@gmail.com",
                     subject: "Security Failed",
-                    body: "Security scan has failed. Please find the attached logs."
+                    body: "Security scan has failed. Please find the attached logs.",
+                    attachLog: true
                     
                 }
             }
